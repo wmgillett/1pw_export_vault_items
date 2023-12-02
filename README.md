@@ -2,6 +2,8 @@
 
 1PW Export Vault Items is a Python script that exports all items from a specified 1Password vault to a CSV file. It leverages the 1Password Command Line Interface (CLI) to access and retrieve vault contents. The script also provides the option to exclude certain vaults (like the private vault) during the export process and encrypts the output CSV file for enhanced security.
 
+This script expanded the default exports in 1Password.
+
 ## Requirements
 - Python 3.x
 - [1Password CLI](https://marketplace.visualstudio.com/items?itemName=1Password.op-vscode) installed and configured on your system 
@@ -9,9 +11,10 @@
 - .env file for environment variables
 
 ## Features
-- Exports all items from the specified 1Password vault.
+- Exports all items from the specified 1Password vault or all vaults in an account.
+- Provides 9 output fields (Vault, category, title, username, password, primary url, urls (json), item details (json))
 - Optionally filters items by category.
-- Provides an option to exclude the private vault from the export.
+- Provides an option to exclude private vaults from the export.
 - Encrypts the output CSV file using a specified password.
 - Logs detailed information during the export process.
   
