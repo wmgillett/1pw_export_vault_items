@@ -123,10 +123,9 @@ def main():
     """
     Gets all items in a vault and writes them to a CSV file
     """
-    vault_name = "Actualizers"  # Replace with your vault name
-    category = "Login" # Replace with your category
+    vault_name = os.getenv("VAULT_TO_EXPORT","")
+    category = os.getenv("CATEGORY_TO_EXPORT","")  # Replace with your vault name
     # run with blank vault_name to get all items
-    # vault_name = ''
     items = get_vault_items(vault_name, category)
     msg = f"Found {len(items)} items in vault {vault_name}"
     print(msg)

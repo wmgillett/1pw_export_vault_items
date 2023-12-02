@@ -1,14 +1,7 @@
-# Project Name
+# 1PW Export Vault Items
 
-Short project description goes here.
+Export Vault Items from 1password via cli
 
-## Table of Contents
-
-- [Project Name](#project-name)
-  - [Table of Contents](#table-of-contents)
-  - [Installation](#installation)
-  - [Usage](#usage)
-    - [Export Vault Details](#export-vault-details)
 
 ## Installation
 
@@ -25,9 +18,11 @@ Short project description goes here.
    ```
    [1password vscode extention](https://marketplace.visualstudio.com/items?itemName=1Password.op-vscode)
 
-## Usage
+3. Create .env file from .env.example
 
-### Export Vault Details
+## Uage
+   ```
+   python app.py
+   ```
 
-To export vault details, run the following command:
 
