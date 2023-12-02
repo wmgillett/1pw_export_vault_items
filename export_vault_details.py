@@ -7,13 +7,17 @@ import os
 import subprocess
 import json
 import csv
-import pyminizip
 import getpass
+import pyminizip
+import shlex  # For safely handling command arguments
+from icecream import ic
 
 from dotenv import load_dotenv
 load_dotenv()
 # from encrypt_file import encrypt_csv
 
+skip_private_vault = os.getenv('SKIP_PRIVATE_VAULT', 'false').lower() == 'true'
+print(f"skip_private_vault: {skip_private_vault}")
 def run_command(command):
     """
     Runs a command in the shell and returns the output
@@ -33,22 +37,26 @@ def run_command(command):
         print(e.stderr)
         raise RuntimeError(f'Command failed: {e}') from e
 
-def get_login_items(vault):
+def filter_vault_items(items, exclude_vaults=None):
     """
-    Gets login items in a vault
+    Filters out items from a vault
     Args:
-        vault (str): Name of the vault
+        items (list of dict): List of items
+        filters (list of str): List of filters to apply
     Returns:
-        dict: JSON output of the command
+        list of dict: Filtered list of items
     """
-    command = f"op item list --categories Login --vault {vault} --format=json"
-    output = run_command(command)
-    try:
-        output_json = json.loads(output)
-        return output_json
-    except json.JSONDecodeError as e:
-        print(e)
-        return {}
+    if exclude_vaults is None:
+        exclude_vaults = ['Private']
+    filtered_items = []
+    print(f"filters: {exclude_vaults}")
+    print(f"items before filtering: {len(items)}")
+    for item in items:
+        # ic(item)
+        if item.get('vault', {}).get('name','') not in exclude_vaults:
+            filtered_items.append(item)
+    print(f"items after filtering: {len(filtered_items)}")
+    return filtered_items
 
 def get_vault_items(vault='', category=''):
     """
@@ -58,21 +66,22 @@ def get_vault_items(vault='', category=''):
     Returns:
         dict: JSON output of the command
     """
-    if vault == '':
-        if category == '':
-            command = "op item list --format=json"
-    else:
-        if category == '':
-            command = f"op item list --vault {vault} --format=json"
-        else:
-            command = f"op item list --categories {category} --vault {vault} --format=json"
+    command = "op item list --format=json"
+    if vault:
+        command += f" --vault {shlex.quote(vault)}"
+    if category:
+        command += f" --categories {shlex.quote(category)}"
+
     output = run_command(command)
     try:
         output_json = json.loads(output)
+        if skip_private_vault:
+            exclude_vaults=['Private']
+            output_json = filter_vault_items(output_json,exclude_vaults)
         return output_json
     except json.JSONDecodeError as e:
-        print(e)
-        return {}
+        print(f"Error decoding JSON: {e}")
+        return []
 
 def get_item_details(item_id):
     """
