@@ -52,9 +52,10 @@ The script handles sensitive data and ensures that:
    SKIP_PRIVATE_VAULT=true  # set to True to filter out Private vault from output, False to leave in.
    VAULT_TO_EXPORT=       # set to specific vault for export or leave empty to export all vaults
    CATEGORY_TO_EXPORT=    # set to specific category (e.g. Login) or leave blank to export all categories
+   SUMMARY_ONLY=false      # set to true to generate summary stats only, false to run full export
    ```
 ## Usage
-1) Define vault and category for export in .env
+1) Define vault and category for export in .env along with any boolean parameters.
 
 2) Run application from command line
    ```bash
@@ -70,17 +71,19 @@ The script handles sensitive data and ensures that:
    [vault]_[category]_passwords.csv
    ```
    ### CSV Output format
-      | Column Name     | Format | Description                                      |
-      |-----------------|--------|--------------------------------------------------|
-      | Vault           | String | The name of the 1Password vault.                 |
-      | Username        | String | The username associated with the item.           |
-      | Password        | String | The password associated with the item.           |
-      | Category        | String | The category of the item (e.g., Login, Secure Note). |
-      | Title           | String | The title of the item.                           |
-      | additional_info | String | Additional information associated with the item. |
-      | url1            | String | The primary URL associated with the item, if any. |
-      | urls            | JSON   | A JSON array of all URLs associated with the item. |
-      | item_json       | JSON   | A JSON representation of the entire item.        |
+      | Column Name       | Format | Description                                      |
+      |-------------------|--------|--------------------------------------------------|
+      | Vault             | String | The name of the 1Password vault.                 |
+      | Username          | String | The username associated with the item.           |
+      | Password          | String | The password associated with the item.           |
+      | Category          | String | The category of the item (e.g., Login, Secure Note). |
+      | Title             | String | The title of the item.                           |
+      | additional_info   | String | Additional information associated with the item. |
+      | url1              | String | The primary URL associated with the item, if any. |
+      | notes_text        | String | extracted text values from notes and other fields        |
+      | urls              | JSON   | A JSON array of all URLs associated with the item. |
+      | item_json         | JSON   | A JSON representation of the item.        |
+      | item_detail_json  | JSON   | A JSON representation of the item details.        |
 
 
 ## Contributing
